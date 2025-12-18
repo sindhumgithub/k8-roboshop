@@ -1,8 +1,9 @@
-appVersion: apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongodb
   namespace: roboshop
+  # these are replica set labels
   labels:
     project: roboshop
     component: mongodb
@@ -10,10 +11,12 @@ metadata:
 spec:
   replicas: 1
   selector:
+    # these labels are used to select pods
     matchLabels:
       project: roboshop
       component: mongodb
       tier: db
+  # pod definition
   template:
     metadata:
       labels:
@@ -24,15 +27,14 @@ spec:
       containers:
       - name: mongodb
         image: muddanadevops/mongodb:v1
-        imagePullPolicy: Always  #pull the image berfor starting the container.
-        
-      readinessProbe:  #to get the application ready
-        tcpSocket:
-          port: 27017
-        initialDelaySeconds: 10
-        periodSeconds: 10  #k8 checks readliness every 10 seconds
-      livenessProbe: #to check the health of the application.
-        tcpSocket:
-          port: 27017
-        initialDelaySeconds: 5
-        periodSeconds: 5
+        imagePullPolicy: Always
+        readinessProbe: #To make the application ready to take requests
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe: #To check the health of the application.
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 5
+          periodSeconds: 5
