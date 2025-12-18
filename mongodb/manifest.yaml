@@ -33,6 +33,6 @@ spec:
         periodSeconds: 10  #k8 checks readliness every 10 seconds
       livenessProbe: #to check the health of the application.
         tcpSocket:
-          port: 8080
-        initialDelaySeconds: 15
-        periodSeconds: 10
+          port: 27017
+        initialDelaySeconds: 5
+        periodSeconds: 5
