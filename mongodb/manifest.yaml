@@ -1,0 +1,38 @@
+appVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  namespace: roboshop
+  labels:
+    project: roboshop
+    component: mongodb
+    tier: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      project: roboshop
+      component: mongodb
+      tier: db
+  template:
+    metadata:
+      labels:
+        project: roboshop
+        component: mongodb
+        tier: db
+    spec:
+      containers:
+      - name: mongodb
+        image: muddanadevops/mongodb:v1
+        imagePullPolicy: Always  #pull the image berfor starting the container.
+        
+      readinessProbe:  #to get the application ready
+        tcpSocket:
+          port: 27017
+        initialDelaySeconds: 10
+        periodSeconds: 10  #k8 checks readliness every 10 seconds
+      livenessProbe: #to check the health of the application.
+        tcpSocket:
+          port: 8080
+        initialDelaySeconds: 15
+        periodSeconds: 10
